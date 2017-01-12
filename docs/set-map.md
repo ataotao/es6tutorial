@@ -516,6 +516,20 @@ map.get(k2) // 222
 
 由上可知，Map的键实际上是跟内存地址绑定的，只要内存地址不一样，就视为两个键。这就解决了同名属性碰撞（clash）的问题，我们扩展别人的库的时候，如果使用对象作为键名，就不用担心自己的属性与原作者的属性同名。
 
+下面这样设置，mapF.get(obj.a)会和mapF.get(obj.b)值相同，引用的值一样。
+```javascript
+let map = new Map();
+var obj = {
+    a: 'a',
+    b: 'a'
+};
+
+map.set(obj.a, 'aaaa').set(obj.b, 'bbbb');
+console.log(map.get(obj.a)); //bbbb
+console.log(map.get(obj.b)); //bbbb
+console.log(map.get(obj.b) === map.get(obj.a)); //true
+```
+
 如果Map的键是一个简单类型的值（数字、字符串、布尔值），则只要两个值严格相等，Map将其视为一个键，包括`0`和`-0`。另外，虽然`NaN`不严格相等于自身，但Map将其视为同一个键。
 
 ```javascript
